@@ -1,25 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+// in src/App.js
+import * as React from "react";
+import { Admin, Resource, ListGuesser , EditGuesser} from 'react-admin';
+import  drfProvider  , { tokenAuthProvider, fetchJsonWithAuthToken } from 'ra-data-django-rest-framework';
+import {PostList} from './Postslist'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import { List, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
+
+const authProvider = tokenAuthProvider({obtainAuthTokenUrl: "http://127.0.0.1:8000/api-token-auth/"})
+const dataProvider = drfProvider("http://127.0.0.1:8000", fetchJsonWithAuthToken);
+
+const App = () => (
+  <Admin authProvider={authProvider} dataProvider={dataProvider}>
+  <Resource name="api" list = {PostList}  edit={EditGuesser} />
+</Admin>
+
+);
+
+;
 
 export default App;
